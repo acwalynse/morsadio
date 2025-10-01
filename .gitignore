@@ -1,0 +1,8 @@
+# Main rules
+.*
+
+# Exeptions
+!.gitignore
+
+# Cargo
+/target
