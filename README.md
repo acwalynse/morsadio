@@ -1,11 +1,11 @@
 Morsadio
 ========
 
-Small CLI program that reproduces morse code.
+Small CLI program that speaks morse code.
 
 ## Usage
 
-For example, following command will reproduce "SOS" in 999 hertz twice.
+For example, following command will speak "SOS" in 999 hertz twice.
 
 ```bash
 morsadio -z 999 "... --- ... / ... --- ..."
@@ -13,8 +13,8 @@ morsadio -z 999 "... --- ... / ... --- ..."
 
 ## Options
 
-`-z | --hertz` - How beep should sound in hertz.
+`-z | --hertz` - How should program beep in hertz.
 
-`-s | --short-beep-ms` - How long should "." sound in milliseconds.
+`-s | --short-beep-ms` - How long should `.` be speaked in milliseconds.
 
-`-l | --long-beep-ms` - How long should "-" sound in milliseconds.
+`-l | --long-beep-ms` - How long should `-` be speaked in milliseconds.
