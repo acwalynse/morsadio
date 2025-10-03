@@ -1,3 +1,4 @@
+use std::process;
 use clap::Parser;
 use morsadio::track;
 
@@ -22,11 +23,11 @@ fn main() {
     
     match args.track.first() {
         Some(_str) => (),
-        None => { eprintln!("Track must be not empty"); return; }
+        None => { eprintln!("Track must be not empty"); process::exit(101); } 
     }
     
     match track::parse(args.track.first().unwrap(), args.hertz, args.short_beep_ms, args.long_beep_ms) {
         Ok(parsed) => track::play(parsed),
-        Err(error) => eprintln!("{}", error)
+        Err(error) => { eprintln!("{}", error); process::exit(101); }
     }
 }
