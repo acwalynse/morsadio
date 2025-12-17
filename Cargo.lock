@@ -460,7 +460,6 @@ version = "1.0.0"
 dependencies = [
  "actually_beep",
  "clap",
- "regex",
 ]
 
 [[package]]
