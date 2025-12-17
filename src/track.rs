@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::{thread, time::Duration};
 use actually_beep::beep_with_hz_and_millis;
 
@@ -5,25 +6,22 @@ use actually_beep::beep_with_hz_and_millis;
 /// Returns a vector of tuples that can be used in `track::play(Vec<(u32, u32)>)` or an error
 /// string.
 pub fn parse(track: &str, hz: u32, short_ms: u32, long_ms: u32) -> Result<Vec<(u32, u32)>, String> {
-    {
-        // Check if track doesn't contain illegal letters.
-        let dict: String = String::from(".-_/ ");
-        for c in track.chars() {
-            if !dict.contains(c) { return Err(String::from("Track contains non-morse symbols")) }
+    let lmap: HashMap<char, (u32, u32)> = HashMap::from([
+        ('.', (hz, short_ms)),
+        ('-', (hz, long_ms )),
+        ('_', (hz, long_ms )),
+        (' ', (0 , short_ms)),
+        ('/', (0 , long_ms )),
+    ]);
+
+    let mut parsed: Vec<(u32, u32)> = Vec::new();
+    for c in track.chars() { 
+        match lmap.get(&c) {
+            Some(t) => parsed.push(*t),
+            None    => return Err(String::from("Track contains non-morse symbols"))
         }
     }
-    
-    let mut parsed: Vec<(u32, u32)> = Vec::new();
-    for unit in track.chars() {
-        match unit {
-            '.'         => parsed.push((hz, short_ms)),
-            '-' | '_'   => parsed.push((hz, long_ms )),
-            ' '         => parsed.push((0,  short_ms)),
-            '/'         => parsed.push((0,  long_ms )),
-            _           => continue
-        }    
-    }
-    
+
     Ok(parsed)
 }
 
@@ -35,6 +33,6 @@ pub fn play(track: Vec<(u32, u32)>) {
             thread::sleep(Duration::from_millis(unit.1 as u64));
             continue;
         }
-        beep_with_hz_and_millis(unit.0, unit.1).unwrap();
+        beep_with_hz_and_millis(unit.0, unit.1).expect("Cannot play audio");
     } 
 }
